@@ -8,5 +8,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "module": "^2.0.0"
+  },
+  "scripts": {
+    "start": "node server.js"
   }
 }
