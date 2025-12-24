@@ -20,7 +20,7 @@ const supabase = createClient(
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://kajaclarium.github.io"
+  "https://kajaclarium.github.io/pwa/**"
 ];
 
 app.use(cors({
@@ -257,4 +257,4 @@ app.put("/admin/update-user/:id", auth, async (req, res) => {
 /* ---------------------------------------
       SERVER START
 ---------------------------------------- */
-app.listen(5000, () => console.log("API running on port 5000"));
+// app.listen(5000, () => console.log("API running on port 5000"));
