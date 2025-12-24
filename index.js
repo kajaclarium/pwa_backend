@@ -8,6 +8,8 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.set("trust proxy", 1);
+
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -20,24 +22,27 @@ const supabase = createClient(
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://kajaclarium.github.io/pwa/**"
+  "https://kajaclarium.github.io"
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin (Postman, mobile apps)
+  origin: (origin, callback) => {
+    // allow server-to-server / Postman
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+      return callback(null, true);
     }
+
+    return callback(new Error("CORS not allowed"));
   },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// IMPORTANT: handle preflight
+app.options("*", cors());
 
 app.use(express.json());
 
