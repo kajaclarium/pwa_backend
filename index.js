@@ -7,7 +7,6 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
 const supabase = createClient(
@@ -19,11 +18,29 @@ const supabase = createClient(
 );
 
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://kajaclarium.github.io"
+];
+
 app.use(cors({
-  origin: 'https://kajaclarium.github.io'
+  origin: function (origin, callback) {
+    // allow requests with no origin (Postman, mobile apps)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
 
-console.log("Supabase connected:", process.env.SUPABASE_URL);
+app.use(express.json());
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "YOUR_SECRET_KEY"; // Use environment variable
 
