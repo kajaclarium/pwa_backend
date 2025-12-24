@@ -7,8 +7,6 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
-app.use(express.json());
-app.set("trust proxy", 1);
 
 
 const supabase = createClient(
@@ -24,6 +22,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://kajaclarium.github.io"
 ];
+
+app.set("trust proxy", 1);
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -41,8 +41,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// IMPORTANT: handle preflight
-app.options("*", cors());
+
 
 app.use(express.json());
 
@@ -262,4 +261,4 @@ app.put("/admin/update-user/:id", auth, async (req, res) => {
 /* ---------------------------------------
       SERVER START
 ---------------------------------------- */
-// app.listen(5000, () => console.log("API running on port 5000"));
+app.listen(5000, () => console.log("API running on port 5000"));
