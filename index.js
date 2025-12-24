@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
@@ -17,7 +18,7 @@ const supabase = createClient(
   }
 );
 
-const cors = require('cors');
+
 app.use(cors({
   origin: 'https://kajaclarium.github.io'
 }));
