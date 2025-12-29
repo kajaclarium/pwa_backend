@@ -196,9 +196,9 @@ app.post("/admin/create-user", auth, async (req, res) => {
     return res.status(403).json({ message: "Not allowed" });
   }
 
-  const { email, password, username, role } = req.body;
+  const { email, password, username } = req.body;
 
-  if (!email || !password || !username || !role) {
+  if (!email || !password || !username ) {
     return res.status(400).json({ message: "All fields required" });
   }
 
