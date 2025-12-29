@@ -11,11 +11,15 @@ const app = express();
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
   {
-    auth: { autoRefreshToken: false, persistSession: false },
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
   }
 );
+
 
 
 const allowedOrigins = [
@@ -178,14 +182,18 @@ app.get("/admin/all-users", auth, async (req, res) => {
     return res.status(403).json({ message: "Not allowed" });
   }
 
-  const { data, error } = await supabase.from("profiles").select("*");
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, email, username, role, created_at");
 
-  if (error || !data) {
+  if (error) {
+    console.error(error);
     return res.status(500).json({ message: "Error fetching users" });
   }
 
   res.json(data);
 });
+
 
 /* ---------------------------------------
       ADMIN: CREATE USER
