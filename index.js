@@ -215,8 +215,7 @@ app.post("/admin/create-user", auth, async (req, res) => {
   const { error: profileError } = await supabase.from("profiles").insert({
     id: authUser.user.id,
     email,
-    username,
-    role, // admin or user
+    username// admin or user
   });
 
   if (profileError) {
